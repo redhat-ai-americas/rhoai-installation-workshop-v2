@@ -6,7 +6,7 @@ This section installs operators and supporting configuration that Red Hat OpenSh
 
 ### 00 - LeaderWorkerSet Operator
 
-Installs the LeaderWorkerSet operator used for multi-node distributed training workloads.
+Installs the LeaderWorkerSet operator used for multi-node distributed workloads.
 
 ```bash
 oc apply -k configs/03-rhoai-operator-dependencies/00-leaderworkerset-operator
@@ -22,7 +22,7 @@ oc apply -k configs/03-rhoai-operator-dependencies/01-leaderworkerset-instance
 
 ### 02 - JobSet Operator
 
-Installs the JobSet operator used to manage groups of Kubernetes Jobs for HPC and AI training workloads.
+Installs the JobSet operator used to manage distributed training jobs with KubeFlow Training Operator.
 
 ```bash
 oc apply -k configs/03-rhoai-operator-dependencies/02-jobset-operator
