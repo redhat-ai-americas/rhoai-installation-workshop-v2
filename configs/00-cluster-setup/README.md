@@ -12,27 +12,34 @@ Displays a workshop banner at the top of the OpenShift console so participants c
 oc apply -k configs/00-cluster-setup/00-cluster-notification
 ```
 
-### 01 - User Auth
+### 01 - Generate HTPasswd
+
+Creates a local `.htpasswd` file with `admin` and `dev` users for the HTPasswd identity provider.
+
+```bash
+./configs/00-cluster-setup/01-generate-htpasswd.sh
+```
+
+### 02 - User Auth
 
 Configures an HTPasswd identity provider with local `admin` and `dev` users for signing into the cluster.
 
 ```bash
-./configs/00-cluster-setup/01-user-auth/generate-htpasswd.sh
-oc apply -k configs/00-cluster-setup/01-user-auth
+oc apply -k configs/00-cluster-setup/02-user-auth
 ```
 
-### 02 - User RBAC
+### 03 - User RBAC
 
 Grants cluster-admin access to the `admin` user and gives cluster-admin for `kube:admin` to help resolve some permissions issues with RHOAI.
 
 ```bash
-oc apply -k configs/00-cluster-setup/02-user-rbac
+oc apply -k configs/00-cluster-setup/03-user-rbac
 ```
 
-### 03 - AWS GPU MachineSet
+### 04 - AWS GPU MachineSet
 
 Creates a GPU MachineSet on AWS so the cluster can schedule GPU-backed workloads.
 
 ```bash
-oc apply -k configs/00-cluster-setup/03-aws-gpu-machineset
+oc apply -k configs/00-cluster-setup/04-aws-gpu-machineset
 ```
