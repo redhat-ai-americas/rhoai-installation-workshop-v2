@@ -16,6 +16,7 @@ jobs:
       - name: Validate Manifests
         run: |
           kustomize version
+          touch configs/00-cluster-setup/02-user-auth/.htpasswd
           ./scripts/validate_manifests.sh
 
   lint-yaml:
