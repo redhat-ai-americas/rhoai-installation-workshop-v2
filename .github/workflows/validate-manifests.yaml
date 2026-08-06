@@ -16,7 +16,6 @@ jobs:
       - name: Validate Manifests
         run: |
           kustomize version
-          touch bootstrap/base/sealed-secrets-secret.yaml
           ./scripts/validate_manifests.sh
 
   lint-yaml:
