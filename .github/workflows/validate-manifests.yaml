@@ -3,6 +3,9 @@ on:  # yamllint disable-line rule:truthy
   pull_request:
     branches:
       - "*"
+  push:
+    branches:
+      - main
 
 jobs:
   lint-kustomize:
