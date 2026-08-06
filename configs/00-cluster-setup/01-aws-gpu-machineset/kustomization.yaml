@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - job.yaml
+  - namespace.yaml
   - rbac.yaml
 
 generatorOptions:
