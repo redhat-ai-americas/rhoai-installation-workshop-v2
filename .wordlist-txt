@@ -27,6 +27,7 @@ CUDA
 CheCluster
 CloudEvents
 ClusterIssuer
+ClusterPolicy
 ClusterRole
 ClusterRoleBinding
 ClusterRoleBindings
@@ -63,6 +64,7 @@ GenAI
 Gi
 GitOps
 Gitea
+HPC
 HTPasswd
 Hashicorp
 HuggingFace
@@ -78,6 +80,7 @@ Infiniband
 Istio
 Jaeger
 Jenkins
+JobSet
 Jupyter
 KServe
 Kafka
@@ -86,6 +89,7 @@ Kibana
 KieApp
 Koku
 KokuMetricsConfig
+Kuadrant
 KubeRay
 Kubeflow
 Kubernetes
@@ -95,6 +99,8 @@ LDAP
 LLM
 LM
 LVM
+LeaderWorkerSet
+LeaderWorkerSetOperator
 Lifecycle
 LlamaStack
 Logstash
@@ -365,6 +371,7 @@ sagemaker
 sandboxed
 scalability
 scalable
+schedulable
 schemas
 seldon
 selectable
