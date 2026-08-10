@@ -1,0 +1,14 @@
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSAuthPolicy
+metadata:
+  annotations:
+    openshift.io/description: Auth policy created for subscription "demo"
+  name: demo-policy
+  namespace: models-as-a-service
+spec:
+  modelRefs:
+    - name: redhataigpt-oss-20b
+      namespace: model-server
+  subjects:
+    groups:
+      - name: 'system:authenticated'

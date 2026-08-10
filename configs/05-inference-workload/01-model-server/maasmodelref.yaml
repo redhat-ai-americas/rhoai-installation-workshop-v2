@@ -1,0 +1,10 @@
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSModelRef
+metadata:
+  annotations:
+    openshift.io/display-name: RedHatAI/gpt-oss-20b
+  name: redhataigpt-oss-20b
+spec:
+  modelRef:
+    kind: LLMInferenceService
+    name: redhataigpt-oss-20b
