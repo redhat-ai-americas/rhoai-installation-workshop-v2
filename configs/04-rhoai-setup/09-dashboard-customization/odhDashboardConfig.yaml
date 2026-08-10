@@ -12,6 +12,7 @@ spec:
   dashboardConfig:
     disableTracking: false
     observabilityDashboard: true
+    genAiStudio: true
   hardwareProfileOrder: []
   notebookController:
     enabled: true
