@@ -43,3 +43,11 @@ Creates a GPU MachineSet on AWS so the cluster can schedule GPU-backed workloads
 ```bash
 oc apply -k configs/00-cluster-setup/04-aws-gpu-machineset
 ```
+
+### 05 - End User Workload Monitoring
+
+Enables OpenShift user workload monitoring so application metrics can be collected and viewed in the console.
+
+```bash
+oc apply -k configs/00-cluster-setup/05-enduser-workload-monitoring
+```
