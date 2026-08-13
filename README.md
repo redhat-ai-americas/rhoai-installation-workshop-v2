@@ -8,6 +8,12 @@ Apply manifests from the repository root unless a section README specifies other
 oc apply -k configs/<section>/<step>
 ```
 
+## Cluster Recommendations
+
+This workshop was built and testing using OpenShift 4.20.31+.
+
+If using the Red Hat Demo Platform, the `AWS with OpenShift Open Environment` is the recommended catalog item.  Be sure to request the `m6a.4xlarge` Control Plane Instance Type.
+
 ## Workshop Sections
 
 The `configs/` directory is organized into numbered sections. Complete them in order; later sections depend on earlier ones.
