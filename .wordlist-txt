@@ -97,6 +97,7 @@ Kueue
 Kyverno
 LDAP
 LLM
+LLMInferenceService
 LM
 LVM
 LeaderWorkerSet
