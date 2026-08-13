@@ -1,0 +1,14 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: data-science-pipelines
+  labels:
+    app: noobaa
+    bucket-provisioner: openshift-storage.noobaa.io-obc
+    noobaa-domain: openshift-storage.noobaa.io
+spec:
+  additionalConfig:
+    bucketclass: noobaa-default-bucket-class
+  bucketName: data-science-pipelines-ai-pipeline-example
+  objectBucketName: obc-ai-pipeline-example-data-science-pipelines
+  storageClassName: openshift-storage.noobaa.io

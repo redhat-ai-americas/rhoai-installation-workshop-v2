@@ -1,0 +1,6 @@
+apiVersion: pipelines.kubeflow.org/v2beta1
+kind: Pipeline
+metadata:
+  name: iris-pipeline
+spec:
+  displayName: iris-pipeline

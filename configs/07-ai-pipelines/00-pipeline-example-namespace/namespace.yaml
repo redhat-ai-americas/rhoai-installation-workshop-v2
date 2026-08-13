@@ -1,0 +1,7 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: ai-pipeline-example
+  labels:
+    kubernetes.io/metadata.name: ai-pipeline-example
+    opendatahub.io/dashboard: 'true'

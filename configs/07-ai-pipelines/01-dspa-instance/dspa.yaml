@@ -1,0 +1,46 @@
+apiVersion: datasciencepipelinesapplications.opendatahub.io/v1
+kind: DataSciencePipelinesApplication
+metadata:
+  name: dspa
+spec:
+  apiServer:
+    deploy: true
+    artifactSignedURLExpirySeconds: 60
+    enableSamplePipeline: false
+    managedPipelines: {}
+    enableOauth: true
+    cacheEnabled: true
+    pipelineStore: kubernetes
+  database:
+    disableHealthCheck: false
+    mariaDB:
+      deploy: true
+      pipelineDBName: mlpipeline
+      pvcSize: 10Gi
+      username: mlpipeline
+  dspVersion: v2
+  objectStorage:
+    disableHealthCheck: false
+    enableExternalRoute: false
+    externalStorage:
+      basePath: ''
+      bucket: data-science-pipelines-ai-pipeline-example
+      # Use in-cluster HTTP for NooBaa S3. The HTTPS endpoint presents a cert signed
+      # by openshift-service-serving-signer, which pipeline task pods do not trust by
+      # default (kfp-launcher reads /etc/ssl/certs/ca-certificates.crt for S3, not
+      # /kfp/certs/ca.crt used for the pipeline API).
+      host: s3.openshift-storage.svc
+      port: "80"
+      region: us-east-1
+      s3CredentialsSecret:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: data-science-pipelines
+      scheme: http
+  persistenceAgent:
+    deploy: true
+    numWorkers: 2
+  podToPodTLS: true
+  scheduledWorkflow:
+    cronScheduleTimezone: UTC
+    deploy: true
