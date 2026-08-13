@@ -355,6 +355,7 @@ prometheus
 provisioner
 psql
 pvc
+py
 rawdeployments
 rbac
 rebase
