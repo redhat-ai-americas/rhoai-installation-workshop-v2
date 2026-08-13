@@ -41,9 +41,12 @@ DCGM
 DNS
 DS
 DSCInitialization
+DSP
+DSPA
 DaemonSets
 DataScienceCluster
 DataSciencePipelines
+DataSciencePipelinesApplication
 Deployment
 Dev
 DevSpaces
@@ -82,6 +85,7 @@ Jaeger
 Jenkins
 JobSet
 Jupyter
+KFP
 KServe
 Kafka
 Keycloak
@@ -120,6 +124,7 @@ NICs
 NMState
 NUMA
 NodeResourceTopology
+NooBaa's
 Noobaa
 NuGet
 OADP
@@ -130,6 +135,7 @@ OGX
 OLM
 ONNX
 OSSM
+ObjectBucketClaim
 Observability
 OpenDataHub
 OpenShift
