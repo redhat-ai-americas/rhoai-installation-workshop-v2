@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: model-server
 
 resources:
-  - model-connection-secret.yaml
   - llminferenceservice.yaml
   - maasmodelref.yaml
+  - model-connection-secret.yaml
