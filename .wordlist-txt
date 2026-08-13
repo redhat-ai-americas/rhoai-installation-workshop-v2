@@ -152,6 +152,7 @@ Quarkus
 Querier
 RBAC
 README
+READMEs
 RHACM
 RHOAI
 RawDeployments
@@ -240,6 +241,7 @@ crypto
 culler
 datasource
 decrypt
+deduplicates
 deployable
 dev
 devfile
@@ -298,6 +300,7 @@ kserve
 kubeadmin
 kubectl
 kubeseal
+kubeval
 kueue
 kustomization
 kustomize
@@ -356,6 +359,7 @@ provisioner
 psql
 pvc
 py
+pyspelling
 rawdeployments
 rbac
 rebase
@@ -368,6 +372,7 @@ rh
 rhel
 rhoai
 rhpds
+rojopolis
 roleRef
 rollout
 rollouts
@@ -390,6 +395,7 @@ sfdc
 ssa
 storageConfig
 strimzi
+subdirectory
 subfolder
 sublicense
 subnet
@@ -417,4 +423,5 @@ wordlist
 workspaces
 xlarge
 yaml
+yamllint
 yq
