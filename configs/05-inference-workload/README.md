@@ -40,3 +40,7 @@ Creates a demo MaaS subscription and authorization policy that grants authentica
 ```bash
 oc apply -k configs/05-inference-workload/02-maas-subscription
 ```
+
+## Additional Steps
+
+Dev user should now be able to provision an API key for the model server.
