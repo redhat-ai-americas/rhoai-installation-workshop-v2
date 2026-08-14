@@ -39,3 +39,7 @@ Runs an `nvidia-smi` pod to display GPU device information from a scheduled work
 ```bash
 oc apply -k configs/02-nvidia-gpu-workload/02-nvidia-gpu-nvidia-smi
 ```
+
+## Additional Steps
+
+Review the pod logs for the deployed workloads.
