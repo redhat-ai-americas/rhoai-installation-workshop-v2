@@ -69,3 +69,9 @@ Enables the NVIDIA GPU console plugin so GPU status and metrics are visible in t
 ```bash
 oc apply -k configs/01-nvidia-gpu-operator/05-optional-nvidia-console-plugin
 ```
+
+## Additional Steps
+
+At this point in time, the GPU node should hopefully be up and running.
+
+Using the OpenShift Web Console, view the pods on the GPU node and track the status of the NVIDIA pods.
