@@ -111,3 +111,19 @@ Customizes the OpenShift AI dashboard, including Gen AI Studio, observability, a
 ```bash
 oc apply -k configs/04-rhoai-setup/09-dashboard-customization
 ```
+
+## Additional Steps
+
+A number of additional items can be reviewed at this stage.
+
+Review the configuration of the MaaS Gateway, including the host URL configuration requirements.
+
+Review the MaaS Database and the connection details.
+
+The MLFlow instance should now be accessible.
+
+The hardware profiles can be reviewed.
+
+The Serving Runtime customizations can be reviewed.
+
+The dev user should now be able to create a workbench.
