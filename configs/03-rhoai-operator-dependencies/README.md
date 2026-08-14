@@ -114,3 +114,7 @@ Configures TLS for Authorino using the OpenShift service serving certificate.
 ```bash
 ./configs/03-rhoai-operator-dependencies/09-connectivity-link-tls-setup.sh
 ```
+
+## Additional Steps
+
+Since we are pinning the Cluster Observability Operator to 1.4.0 with a manual install, you will need to approve the install plan for the operator in the OpenShift Web Console.
