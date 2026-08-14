@@ -69,3 +69,9 @@ Creates a GPU MachineSet on AWS so the cluster can schedule GPU-backed workloads
 ```bash
 oc apply -k configs/00-cluster-setup/05-aws-gpu-machineset
 ```
+
+## Additional Steps
+
+After the GPU MachineSet has populated, using the OpenShift Web Console, update the MachineSet to add the GPU node.
+
+At the same time, it is recommended to deploy two additional worker nodes at the same time.
