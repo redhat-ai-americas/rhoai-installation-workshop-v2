@@ -56,7 +56,7 @@ oc apply -k configs/04-rhoai-setup/03-inference-gateway
 
 Creates the Models as a Service gateway, route, and TLS configuration for authenticated model access.
 
-**Documentation:** [Deploy and manage Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/deploy-and-manage-models-as-a-service_maas)
+**Documentation:** [Deploy and manage Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/deploy-and-manage-models-as-a-service_maas), [MaaS Namespace Security Knowledge Base](https://access.redhat.com/solutions/7145755)
 
 ```bash
 oc apply -k configs/04-rhoai-setup/04-maas-gateway
