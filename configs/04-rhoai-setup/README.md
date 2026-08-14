@@ -116,7 +116,7 @@ oc apply -k configs/04-rhoai-setup/09-dashboard-customization
 
 A number of additional items can be reviewed at this stage.
 
-Review the configuration of the MaaS Gateway, including the host URL configuration requirements.
+Review the configuration of the MaaS Gateway, including the host URL configuration requirements, and the gateway namespace admissions requirements.
 
 Review the MaaS Database and the connection details.
 
