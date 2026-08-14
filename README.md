@@ -50,7 +50,7 @@ Creates a test namespace and deploys sample GPU pods to confirm the operator sta
 
 **Objective:** Install operators and supporting configuration that Red Hat OpenShift AI depends on before the core RHOAI installation.
 
-Installs LeaderWorkerSet, JobSet, OpenTelemetry, Tempo, Cluster Observability, and Connectivity Link (Kuadrant) operators, plus TLS setup for Authorino.
+Installs LeaderWorkerSet, JobSet, Kueue, OpenTelemetry, Tempo, Cluster Observability, and Connectivity Link (Kuadrant) operators, plus TLS setup for Authorino.
 
 ### [04 - RHOAI Setup](configs/04-rhoai-setup/README.md)
 
