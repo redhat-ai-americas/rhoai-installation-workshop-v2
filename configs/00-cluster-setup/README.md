@@ -50,22 +50,22 @@ Grants cluster-admin access to the `admin` user and gives cluster-admin for `kub
 oc apply -k configs/00-cluster-setup/03-user-rbac
 ```
 
-### 04 - AWS GPU MachineSet
-
-Creates a GPU MachineSet on AWS so the cluster can schedule GPU-backed workloads.
-
-**Documentation:** [Adding a GPU node to an existing OpenShift Container Platform cluster](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/machine_management/managing-compute-machines-with-the-machine-api#adding-a-gpu-node-to-an-existing-openshift-container-platform-cluster)
-
-```bash
-oc apply -k configs/00-cluster-setup/04-aws-gpu-machineset
-```
-
-### 05 - End User Workload Monitoring
+### 04 - End User Workload Monitoring
 
 Enables OpenShift user workload monitoring so application metrics can be collected and viewed in the console.
 
 **Documentation:** [User workload monitoring first steps](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/getting_started/user-workload-monitoring-first-steps)
 
 ```bash
-oc apply -k configs/00-cluster-setup/05-enduser-workload-monitoring
+oc apply -k configs/00-cluster-setup/04-enduser-workload-monitoring
+```
+
+### 05 - AWS GPU MachineSet
+
+Creates a GPU MachineSet on AWS so the cluster can schedule GPU-backed workloads.
+
+**Documentation:** [Adding a GPU node to an existing OpenShift Container Platform cluster](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/machine_management/managing-compute-machines-with-the-machine-api#adding-a-gpu-node-to-an-existing-openshift-container-platform-cluster)
+
+```bash
+oc apply -k configs/00-cluster-setup/05-aws-gpu-machineset
 ```
