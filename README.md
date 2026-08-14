@@ -14,6 +14,16 @@ This workshop was built and testing using OpenShift 4.20.31+.
 
 If using the Red Hat Demo Platform, the `AWS with OpenShift Open Environment` is the recommended catalog item.  Be sure to request the `m6a.4xlarge` Control Plane Instance Type.
 
+## Documentation
+
+Each workshop section README links to official product documentation for additional context. Primary references:
+
+- [Red Hat OpenShift AI Self-Managed 3.4](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4)
+- [OpenShift Container Platform 4.20](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20)
+- [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for repository conventions and validation requirements.
+
 ## Workshop Sections
 
 The `configs/` directory is organized into numbered sections. Complete them in order; later sections depend on earlier ones.
