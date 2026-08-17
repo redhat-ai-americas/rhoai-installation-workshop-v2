@@ -41,6 +41,14 @@ Creates a demo MaaS subscription and authorization policy that grants authentica
 oc apply -k configs/05-inference-workload/02-maas-subscription
 ```
 
+### 03 - Stop Workload
+
+Stops the deployed LLM inference service by setting the KServe stop annotation on the `LLMInferenceService`.
+
+```bash
+./configs/05-inference-workload/03-stop-workload.sh
+```
+
 ## Additional Steps
 
-Dev user should now be able to provision an API key for the model server.
+Dev user should now be able to provision an API key for the model server.  Be sure to stop the model server to free up the GPUs after testing.
