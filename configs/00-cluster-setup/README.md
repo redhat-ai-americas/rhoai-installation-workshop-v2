@@ -70,8 +70,16 @@ Creates a GPU MachineSet on AWS so the cluster can schedule GPU-backed workloads
 oc apply -k configs/00-cluster-setup/05-aws-gpu-machineset
 ```
 
+### 06 - Scale Workers
+
+Scales the GPU worker MachineSet and the non-GPU worker MachineSet to two nodes each.
+
+**Documentation:** [Managing compute machines with the Machine API](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/machine_management/managing-compute-machines-with-the-machine-api)
+
+```bash
+./configs/00-cluster-setup/06-scale-workers.sh
+```
+
 ## Additional Steps
 
-After the GPU MachineSet has populated, using the OpenShift Web Console, update the MachineSet to add the GPU node.
-
-At the same time, it is recommended to deploy two additional worker nodes at the same time.
+After the GPU MachineSet has been created, run step 06 to scale worker nodes. You can also scale MachineSets from the OpenShift web console under **Compute** > **MachineSets**.
