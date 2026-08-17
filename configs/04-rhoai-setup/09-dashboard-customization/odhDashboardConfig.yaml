@@ -10,6 +10,7 @@ metadata:
     platform.opendatahub.io/part-of: dashboard
 spec:
   dashboardConfig:
+    disableKueue: false # Enables kueue workload management in the dashboard
     disableTracking: false
     observabilityDashboard: true # Enable observability dashboard TP feature
     genAiStudio: true # Enable genAI studio TP feature
