@@ -62,7 +62,7 @@ This is the core OpenShift AI platform that later sections use for model serving
 
 **Objective:** Deploy a sample LLM inference service and configure Models as a Service (MaaS) so workshop participants can call a model through authenticated API access.
 
-Creates the model-server namespace, deploys a `gpt-oss-20b` LLMInferenceService, and sets up a demo MaaS subscription with authorization policies.
+Creates the model-server namespace, deploys a `meta-llama/llama-3.2-1b-instruct` LLMInferenceService, and sets up a demo MaaS subscription with authorization policies.
 
 ### [06 - ODF NooBaa](configs/06-odf-noobaa/README.md)
 
