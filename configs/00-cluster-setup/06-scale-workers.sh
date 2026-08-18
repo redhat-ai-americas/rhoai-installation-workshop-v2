@@ -2,12 +2,14 @@
 set -e
 
 NAMESPACE=openshift-machine-api
-REPLICAS=2
+GPU_REPLICAS=2
+WORKER_REPLICAS=2
 
 scale_machineset() {
   local machineset=$1
-  echo "Scaling machineset/${machineset} to ${REPLICAS} replicas"
-  oc -n "${NAMESPACE}" scale "machineset/${machineset}" --replicas="${REPLICAS}"
+  local replicas=$2
+  echo "Scaling machineset/${machineset} to ${replicas} replicas"
+  oc -n "${NAMESPACE}" scale "machineset/${machineset}" --replicas="${replicas}"
 }
 
 find_gpu_machineset() {
@@ -59,7 +61,7 @@ if [ -z "${GPU_MACHINESET}" ]; then
   exit 1
 fi
 
-scale_machineset "${GPU_MACHINESET}"
+scale_machineset "${GPU_MACHINESET}" "${GPU_REPLICAS}"
 
 WORKER_MACHINESET=""
 for machineset in $(oc -n "${NAMESPACE}" get machinesets.machine.openshift.io -o name); do
@@ -85,4 +87,4 @@ if [ -z "${WORKER_MACHINESET}" ]; then
   exit 1
 fi
 
-scale_machineset "${WORKER_MACHINESET}"
+scale_machineset "${WORKER_MACHINESET}" "${WORKER_REPLICAS}"
