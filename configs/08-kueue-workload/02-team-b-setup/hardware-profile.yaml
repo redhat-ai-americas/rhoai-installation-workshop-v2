@@ -1,0 +1,34 @@
+apiVersion: infrastructure.opendatahub.io/v1
+kind: HardwareProfile
+metadata:
+  annotations:
+    opendatahub.io/disabled: 'false'
+    opendatahub.io/display-name: team-b
+  creationTimestamp: '2026-08-17T22:11:53Z'
+  name: team-b
+  namespace: team-b-kueue-example
+spec:
+  identifiers:
+    - defaultCount: 2
+      displayName: CPU
+      identifier: cpu
+      maxCount: 4
+      minCount: 1
+      resourceType: CPU
+    - defaultCount: 4Gi
+      displayName: Memory
+      identifier: memory
+      maxCount: 8Gi
+      minCount: 2Gi
+      resourceType: Memory
+    - defaultCount: 1
+      displayName: nvidia.com/gpu
+      identifier: nvidia.com/gpu
+      maxCount: 1
+      minCount: 1
+      resourceType: Accelerator
+  scheduling:
+    kueue:
+      localQueueName: team-b
+      priorityClass: None
+    type: Queue

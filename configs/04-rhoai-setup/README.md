@@ -56,7 +56,7 @@ oc apply -k configs/04-rhoai-setup/03-inference-gateway
 
 Creates the Models as a Service gateway, route, and TLS configuration for authenticated model access.
 
-**Documentation:** [Deploy and manage Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/deploy-and-manage-models-as-a-service_maas)
+**Documentation:** [Deploy and manage Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/deploy-and-manage-models-as-a-service_maas), [MaaS Namespace Security Knowledge Base](https://access.redhat.com/solutions/7145755)
 
 ```bash
 oc apply -k configs/04-rhoai-setup/04-maas-gateway
@@ -82,32 +82,58 @@ Creates the database connection secret that links Models as a Service to the Pos
 oc apply -k configs/04-rhoai-setup/06-maas-connection
 ```
 
-### 07 - MLflow
+### 07 - Restart Kuadrant
+
+Restarts Kuadrant operators so AuthPolicies are accepted after the OpenShift AI gateway and MaaS database connection are ready. Required for MaaS API authentication (for example, the dashboard tokens page).
+
+**Documentation:** [Install Connectivity Link from the CLI](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4/html-single/install_connectivity_link/index#install-connectivity-link-on-openshift-container-platform-from-the-cli), [Configure TLS for MaaS](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html-single/govern_llm_access_with_models-as-a-service/index#configure-tls-for-maas_maas-deploy)
+
+```bash
+./configs/04-rhoai-setup/07-restart-kuadrant/restart-kuadrant.sh
+```
+
+### 08 - MLflow
 
 Deploys an MLflow instance for experiment tracking and model artifacts.
 
 **Documentation:** [Install and configure MLflow](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_mlflow/installing-mlflow_mlflow)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/07-mlflow
+oc apply -k configs/04-rhoai-setup/08-mlflow
 ```
 
-### 08 - Hardware Profiles
+### 09 - Hardware Profiles
 
 Creates NVIDIA GPU hardware profiles for model serving and workbench workloads in the OpenShift AI dashboard.
 
 **Documentation:** [Working with hardware profiles](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_accelerators/working-with-hardware-profiles_accelerators)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/08-hardware-profiles
+oc apply -k configs/04-rhoai-setup/09-hardware-profiles
 ```
 
-### 09 - Dashboard Customization
+### 10 - Dashboard Customization
 
 Customizes the OpenShift AI dashboard, including Gen AI Studio, observability, and available serving runtime templates.
 
 **Documentation:** [Enable the observability dashboard in the UI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/managing-observability_managing-rhoai#enable-the-observability-dashboard-in-the-ui), [Administer OpenShift AI platform access, apps, and operations](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/index)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/09-dashboard-customization
+oc apply -k configs/04-rhoai-setup/10-dashboard-customization
 ```
+
+## Additional Steps
+
+A number of additional items can be reviewed at this stage.
+
+Review the configuration of the MaaS Gateway, including the host URL configuration requirements, and the gateway namespace admissions requirements.
+
+Review the MaaS Database and the connection details.
+
+The MLFlow instance should now be accessible.
+
+The hardware profiles can be reviewed.
+
+The Serving Runtime customizations can be reviewed.
+
+The dev user should now be able to create a workbench.

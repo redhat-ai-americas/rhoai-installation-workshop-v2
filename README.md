@@ -50,7 +50,7 @@ Creates a test namespace and deploys sample GPU pods to confirm the operator sta
 
 **Objective:** Install operators and supporting configuration that Red Hat OpenShift AI depends on before the core RHOAI installation.
 
-Installs LeaderWorkerSet, JobSet, OpenTelemetry, Tempo, Cluster Observability, and Connectivity Link (Kuadrant) operators, plus TLS setup for Authorino.
+Installs LeaderWorkerSet, JobSet, Kueue, OpenTelemetry, Tempo, Cluster Observability, and Connectivity Link (Kuadrant) operators, plus TLS setup for Authorino.
 
 ### [04 - RHOAI Setup](configs/04-rhoai-setup/README.md)
 
@@ -62,7 +62,7 @@ This is the core OpenShift AI platform that later sections use for model serving
 
 **Objective:** Deploy a sample LLM inference service and configure Models as a Service (MaaS) so workshop participants can call a model through authenticated API access.
 
-Creates the model-server namespace, deploys a `gpt-oss-20b` LLMInferenceService, and sets up a demo MaaS subscription with authorization policies.
+Creates the model-server namespace, deploys a `meta-llama/llama-3.2-1b-instruct` LLMInferenceService, and sets up a demo MaaS subscription with authorization policies.
 
 ### [06 - ODF NooBaa](configs/06-odf-noobaa/README.md)
 
@@ -75,3 +75,9 @@ Installs the ODF operator, optionally enables the ODF console plugin, and deploy
 **Objective:** Configure Data Science Pipelines and run a sample Iris classification workflow using NooBaa object storage for pipeline artifacts.
 
 Creates the pipeline namespace, deploys a DataSciencePipelinesApplication (DSPA) with MariaDB and an ObjectBucketClaim, and applies the Iris Kubeflow pipeline.
+
+### [08 - Kueue Workload](configs/08-kueue-workload/README.md)
+
+**Objective:** Demonstrate GPU quota sharing and borrowing between teams using Kueue queues, hardware profiles, and sample inference and workbench workloads.
+
+Configures ResourceFlavors, per-team ClusterQueues in a shared cohort, and deploys Team A inference and Team B workbench workloads that compete for GPU capacity.

@@ -4,14 +4,15 @@ metadata:
   annotations:
     opendatahub.io/connections: llama-3-2-1b-instruct
     opendatahub.io/genai-use-case: chat
-    opendatahub.io/hardware-profile-name: nvidia-gpu-serving
-    opendatahub.io/hardware-profile-namespace: redhat-ods-applications
+    opendatahub.io/hardware-profile-name: team-a
+    opendatahub.io/hardware-profile-namespace: team-a-kueue-example
     opendatahub.io/model-type: generative
     openshift.io/display-name: meta-llama/llama-3.2-1b-instruct
   name: llama-3-2-1b-instruct
   labels:
     opendatahub.io/dashboard: 'true'
     opendatahub.io/genai-asset: 'true'
+    kueue.x-k8s.io/queue-name: team-a
 spec:
   model:
     name: "meta-llama/llama-3.2-1b-instruct"

@@ -23,7 +23,7 @@ oc apply -k configs/05-inference-workload/00-model-server-namespace
 
 ### 01 - Model Server
 
-Deploys the Red Hat AI `gpt-oss-20b` LLMInferenceService and publishes it to Models as a Service.
+Deploys the `meta-llama/llama-3.2-1b-instruct` LLMInferenceService and publishes it to Models as a Service.
 
 **Documentation:** [Deploying models by using Distributed Inference with llm-d](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/deploy_models_using_distributed_inference_with_llm-d/deploying-models-using-distributed-inference_distributed-inference)
 
@@ -39,4 +39,35 @@ Creates a demo MaaS subscription and authorization policy that grants authentica
 
 ```bash
 oc apply -k configs/05-inference-workload/02-maas-subscription
+```
+
+### 03 - Stop Workload
+
+Stops the deployed LLM inference service (`llama-3-2-1b-instruct`) by setting the KServe stop annotation on the `LLMInferenceService`.
+
+```bash
+./configs/05-inference-workload/03-stop-workload/stop-workload.sh
+```
+
+## Additional Steps
+
+Dev user should now be able to provision an API key for the model server.  Be sure to stop the model server to free up the GPUs after testing.
+
+### Example Chat Completions
+
+```
+curl --location 'https://maas.apps.<cluster-url>/model-server/llama-3-2-1b-instruct/v1/chat/completions' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer sk-oai-<token>' \
+--data '{
+    "model": "meta-llama/llama-3.2-1b-instruct",
+    "messages": [
+        {
+            "role": "user",
+            "content": "Who founded Red Hat?"
+        }
+    ],
+    "temperature": 0.7,
+    "max_tokens": 100
+}'
 ```
