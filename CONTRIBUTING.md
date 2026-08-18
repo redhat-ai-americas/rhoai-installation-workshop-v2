@@ -26,7 +26,7 @@ Install the tools used by CI and the helper scripts before contributing:
 | `jq` | `check-kustomization-format.sh` |
 | [yamllint](https://yamllint.readthedocs.io/) | `lint-yaml` job |
 | [Helm](https://helm.sh/) | `lint-helm` job (when charts are present) |
-| `htpasswd` (from `httpd-tools`) | `configs/00-cluster-setup/01-generate-htpasswd.sh` |
+| `htpasswd` (from `httpd-tools`) | `configs/00-cluster-setup/01-generate-htpasswd/generate-htpasswd.sh` |
 
 Python 3.14 is used in CI for `yamllint`; any recent Python 3 release should work locally.
 
@@ -197,7 +197,7 @@ For spellcheck locally, install [pyspelling](https://github.com/facelessuser/pys
 
 ### Shell scripts in `configs/`
 
-Some workshop steps use scripts outside `scripts/` (for example, `01-generate-htpasswd.sh`, `06-scale-workers.sh`, and `10-connectivity-link-tls-setup.sh`). These are operational scripts for cluster setup, not CI helpers. Document them in the relevant section README. Use `set -e` and a shebang for new scripts.
+Some workshop steps use scripts outside `scripts/` (for example, `generate-htpasswd.sh`, `scale-workers.sh`, and `connectivity-link-tls-setup.sh`). These are operational scripts for cluster setup, not CI helpers. Document them in the relevant section README. Use `set -e` and a shebang for new scripts.
 
 ### Pull requests
 

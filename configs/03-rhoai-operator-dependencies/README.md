@@ -122,7 +122,7 @@ Configures TLS for Authorino using the OpenShift service serving certificate.
 **Documentation:** [Configure TLS for MaaS](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html-single/govern_llm_access_with_models-as-a-service/index#configure-tls-for-maas_maas-deploy)
 
 ```bash
-./configs/03-rhoai-operator-dependencies/10-connectivity-link-tls-setup.sh
+./configs/03-rhoai-operator-dependencies/10-connectivity-link-tls-setup/connectivity-link-tls-setup.sh
 ```
 
 ## Additional Steps

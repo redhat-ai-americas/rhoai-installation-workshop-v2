@@ -27,7 +27,7 @@ Creates a local `.htpasswd` file with `admin` and `dev` users for the HTPasswd i
 **Documentation:** [Configuring an htpasswd identity provider](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/authentication_and_authorization/configuring-identity-providers#configuring-an-htpasswd-identity-provider)
 
 ```bash
-./configs/00-cluster-setup/01-generate-htpasswd.sh
+./configs/00-cluster-setup/01-generate-htpasswd/generate-htpasswd.sh
 ```
 
 ### 02 - User Auth
@@ -77,7 +77,7 @@ Scales the GPU worker MachineSet and the non-GPU worker MachineSet to two nodes 
 **Documentation:** [Managing compute machines with the Machine API](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/machine_management/managing-compute-machines-with-the-machine-api)
 
 ```bash
-./configs/00-cluster-setup/06-scale-workers.sh
+./configs/00-cluster-setup/06-scale-workers/scale-workers.sh
 ```
 
 ## Additional Steps

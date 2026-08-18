@@ -2,7 +2,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-HTPASSWD_FILE="${SCRIPT_DIR}/02-user-auth/.htpasswd"
+HTPASSWD_FILE="${SCRIPT_DIR}/../02-user-auth/.htpasswd"
 
 # Create the file and add the first user
 htpasswd -cb "${HTPASSWD_FILE}" admin admin
