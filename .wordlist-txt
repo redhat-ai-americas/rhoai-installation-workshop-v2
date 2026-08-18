@@ -28,6 +28,7 @@ CheCluster
 CloudEvents
 ClusterIssuer
 ClusterPolicy
+ClusterQueues
 ClusterRole
 ClusterRoleBinding
 ClusterRoleBindings
@@ -147,6 +148,7 @@ OperatorHub
 PCI
 PV
 PolicyReport
+Postinstallation
 Prometheus
 Quarkus
 Querier
@@ -157,6 +159,8 @@ RHACM
 RHOAI
 RawDeployments
 Rebasing
+ResourceFlavor
+ResourceFlavors
 RoleBinding
 Rollout
 Route
@@ -239,6 +243,7 @@ configs
 cpu
 crypto
 culler
+customizations
 datasource
 decrypt
 deduplicates
@@ -322,6 +327,7 @@ mig
 minio
 mlflow
 modelregistry
+multicloud
 na
 namespace
 namespaced
@@ -392,6 +398,7 @@ serverless
 serviceaccount
 servicemesh
 sfdc
+smi
 ssa
 storageConfig
 strimzi
