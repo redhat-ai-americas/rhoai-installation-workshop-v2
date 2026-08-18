@@ -1,0 +1,59 @@
+apiVersion: serving.kserve.io/v1alpha2
+kind: LLMInferenceService
+metadata:
+  annotations:
+    opendatahub.io/connections: llama-3-2-1b-instruct
+    opendatahub.io/genai-use-case: chat
+    opendatahub.io/hardware-profile-name: team-a
+    opendatahub.io/hardware-profile-namespace: team-a-kueue-example
+    opendatahub.io/model-type: generative
+    openshift.io/display-name: meta-llama/llama-3.2-1b-instruct
+  name: llama-3-2-1b-instruct
+  labels:
+    opendatahub.io/dashboard: 'true'
+    opendatahub.io/genai-asset: 'true'
+    kueue.x-k8s.io/queue-name: team-a
+spec:
+  model:
+    name: "meta-llama/llama-3.2-1b-instruct"
+    uri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
+  replicas: 2
+  router:
+    gateway:
+      refs:
+        - name: maas-default-gateway
+          namespace: openshift-ingress
+    route: {}
+    scheduler:
+      template:
+        affinity:
+          podAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: llama-3-2-1b-instruct
+                  topologyKey: kubernetes.io/hostname
+                weight: 100
+        tolerations:
+          - effect: NoSchedule
+            key: nvidia.com/gpu
+            operator: Exists
+        containers:
+          - name: main
+  template:
+    containers:
+      - name: main
+        resources:
+          limits:
+            cpu: '4'
+            memory: 8Gi
+            nvidia.com/gpu: '1'
+          requests:
+            cpu: '2'
+            memory: 4Gi
+            nvidia.com/gpu: '1'
+    tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists

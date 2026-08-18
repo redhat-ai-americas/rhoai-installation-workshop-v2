@@ -1,0 +1,8 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: team-b-kueue-example
+  labels:
+    opendatahub.io/dashboard: 'true'
+    kueue.openshift.io/managed: 'true'
+    maas-gateway-access: 'true'

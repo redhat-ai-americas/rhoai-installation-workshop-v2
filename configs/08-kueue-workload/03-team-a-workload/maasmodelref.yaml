@@ -1,0 +1,10 @@
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSModelRef
+metadata:
+  annotations:
+    openshift.io/display-name: meta-llama/llama-3.2-1b-instruct
+  name: llama-3-2-1b-instruct
+spec:
+  modelRef:
+    kind: LLMInferenceService
+    name: llama-3-2-1b-instruct

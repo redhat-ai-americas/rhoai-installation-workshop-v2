@@ -75,3 +75,9 @@ Installs the ODF operator, optionally enables the ODF console plugin, and deploy
 **Objective:** Configure Data Science Pipelines and run a sample Iris classification workflow using NooBaa object storage for pipeline artifacts.
 
 Creates the pipeline namespace, deploys a DataSciencePipelinesApplication (DSPA) with MariaDB and an ObjectBucketClaim, and applies the Iris Kubeflow pipeline.
+
+### [08 - Kueue Workload](configs/08-kueue-workload/README.md)
+
+**Objective:** Demonstrate GPU quota sharing and borrowing between teams using Kueue queues, hardware profiles, and sample inference and workbench workloads.
+
+Configures ResourceFlavors, per-team ClusterQueues in a shared cohort, and deploys Team A inference and Team B workbench workloads that compete for GPU capacity.

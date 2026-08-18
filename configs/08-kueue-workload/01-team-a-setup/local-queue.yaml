@@ -1,0 +1,7 @@
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: team-a
+  namespace: team-a-kueue-example
+spec:
+  clusterQueue: team-a
