@@ -7,4 +7,5 @@ resources:
   - cluster-queue.yaml
   - hardware-profile.yaml
   - local-queue.yaml
+  - role-binding.yaml
   - team-namespace.yaml
