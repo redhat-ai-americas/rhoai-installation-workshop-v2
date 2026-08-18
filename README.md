@@ -64,7 +64,7 @@ This is the core OpenShift AI platform that later sections use for model serving
 
 Creates the model-server namespace, deploys a `gpt-oss-20b` LLMInferenceService, and sets up a demo MaaS subscription with authorization policies.
 
-### [06 - ODF NooBaa](configs/06-odf-nooba/README.md)
+### [06 - ODF NooBaa](configs/06-odf-noobaa/README.md)
 
 **Objective:** Provide S3-compatible object storage on the cluster for pipeline artifacts and other workloads using OpenShift Data Foundation and a standalone NooBaa instance.
 
