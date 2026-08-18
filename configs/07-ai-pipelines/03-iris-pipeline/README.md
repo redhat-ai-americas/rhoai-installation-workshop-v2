@@ -12,5 +12,5 @@ Sample Kubeflow pipeline for Iris classification training and evaluation.
 This pipeline was rendered from the Kubeflow example located in the [kubeflow-pipelines-examples](https://github.com/redhat-ai-services/kubeflow-pipelines-examples/blob/main/pipelines/11_iris_training_pipeline.py) repository.
 
 ```bash
-oc apply -k configs/07-ai-pipelines/02-iris-pipeline
+oc apply -k configs/07-ai-pipelines/03-iris-pipeline
 ```

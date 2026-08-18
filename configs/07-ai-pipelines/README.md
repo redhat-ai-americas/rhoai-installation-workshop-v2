@@ -22,24 +22,34 @@ Creates the `ai-pipeline-example` namespace with labels required for the OpenShi
 oc apply -k configs/07-ai-pipelines/00-pipeline-example-namespace
 ```
 
-### 01 - DSPA Instance
+### 01 - Dev User RBAC
+
+Grants the `dev` user `edit` access in the `ai-pipeline-example` namespace so workshop participants can create and run pipelines from the dashboard.
+
+**Documentation:** [Organize projects, collaborate in workbenches, and deploy models](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/organize_projects_collaborate_in_workbenches_and_deploy_models/index)
+
+```bash
+oc apply -k configs/07-ai-pipelines/01-dev-user-rbac
+```
+
+### 02 - DSPA Instance
 
 Deploys a DataSciencePipelinesApplication with MariaDB and object storage backed by an ObjectBucketClaim on NooBaa.
 
 **Documentation:** [Configuring a pipeline server](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html-single/working_with_ai_pipelines/index#configuring-a-pipeline-server)
 
 ```bash
-oc apply -k configs/07-ai-pipelines/01-dspa-instance
+oc apply -k configs/07-ai-pipelines/02-dspa-instance
 ```
 
-### 02 - Iris Pipeline
+### 03 - Iris Pipeline
 
 Creates the Iris classification Kubeflow pipeline and pipeline version for running a sample ML workflow.
 
 **Documentation:** [Build, schedule, and track machine learning pipelines](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_ai_pipelines/index)
 
 ```bash
-oc apply -k configs/07-ai-pipelines/02-iris-pipeline
+oc apply -k configs/07-ai-pipelines/03-iris-pipeline
 ```
 
-See also [configs/07-ai-pipelines/02-iris-pipeline/README.md](02-iris-pipeline/README.md).
+See also [configs/07-ai-pipelines/03-iris-pipeline/README.md](03-iris-pipeline/README.md).
