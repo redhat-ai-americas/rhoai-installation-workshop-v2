@@ -2,9 +2,9 @@ apiVersion: maas.opendatahub.io/v1alpha1
 kind: MaaSModelRef
 metadata:
   annotations:
-    openshift.io/display-name: RedHatAI/gpt-oss-20b
-  name: redhataigpt-oss-20b
+    openshift.io/display-name: meta-llama/llama-3.2-1b-instruct
+  name: llama-3-2-1b-instruct
 spec:
   modelRef:
     kind: LLMInferenceService
-    name: redhataigpt-oss-20b
+    name: llama-3-2-1b-instruct

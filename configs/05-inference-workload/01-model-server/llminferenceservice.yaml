@@ -2,21 +2,21 @@ apiVersion: serving.kserve.io/v1alpha2
 kind: LLMInferenceService
 metadata:
   annotations:
-    opendatahub.io/connections: gpt-oss-20b
+    opendatahub.io/connections: llama-3-2-1b-instruct
     opendatahub.io/genai-use-case: chat
     opendatahub.io/hardware-profile-name: nvidia-gpu-serving
     opendatahub.io/hardware-profile-namespace: redhat-ods-applications
     opendatahub.io/model-type: generative
-    openshift.io/display-name: RedHatAI/gpt-oss-20b
-  name: redhataigpt-oss-20b
+    openshift.io/display-name: meta-llama/llama-3.2-1b-instruct
+  name: llama-3-2-1b-instruct
   labels:
     opendatahub.io/dashboard: 'true'
     opendatahub.io/genai-asset: 'true'
 spec:
   model:
-    name: "redhatai/gpt-oss-20b"
-    uri: 'oci://registry.redhat.io/rhelai1/modelcar-gpt-oss-20b:1.5'
-  replicas: 1
+    name: "meta-llama/llama-3.2-1b-instruct"
+    uri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
+  replicas: 2
   router:
     gateway:
       refs:
@@ -31,7 +31,7 @@ spec:
               - podAffinityTerm:
                   labelSelector:
                     matchLabels:
-                      app.kubernetes.io/name: redhataigpt-oss-20b
+                      app.kubernetes.io/name: llama-3-2-1b-instruct
                   topologyKey: kubernetes.io/hostname
                 weight: 100
         tolerations:
@@ -45,12 +45,12 @@ spec:
       - name: main
         resources:
           limits:
-            cpu: '8'
-            memory: 16Gi
-            nvidia.com/gpu: '1'
-          requests:
             cpu: '4'
             memory: 8Gi
+            nvidia.com/gpu: '1'
+          requests:
+            cpu: '2'
+            memory: 4Gi
             nvidia.com/gpu: '1'
     tolerations:
       - effect: NoSchedule
