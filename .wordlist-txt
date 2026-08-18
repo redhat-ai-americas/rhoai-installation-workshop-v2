@@ -15,6 +15,7 @@ ApplicationSet
 ApplicationSets
 ArgoCD
 ArgoCD's
+AuthPolicies
 Authorino
 Autoscaler
 Bitnami
