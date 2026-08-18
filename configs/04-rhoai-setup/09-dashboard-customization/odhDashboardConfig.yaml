@@ -10,16 +10,16 @@ metadata:
     platform.opendatahub.io/part-of: dashboard
 spec:
   dashboardConfig:
-    disableKueue: false # Enables kueue workload management in the dashboard
+    disableKueue: false  # Enables kueue workload management in the dashboard
     disableTracking: false
-    observabilityDashboard: true # Enable observability dashboard TP feature
-    genAiStudio: true # Enable genAI studio TP feature
+    observabilityDashboard: true  # Enable observability dashboard TP feature
+    genAiStudio: true  # Enable genAI studio TP feature
   hardwareProfileOrder: []
   notebookController:
     enabled: true
     notebookNamespace: rhods-notebooks
     pvcSize: 20Gi
-  templateDisablement: # Disable templates that are not needed
+  templateDisablement:  # Disable templates that are not needed
     - vllm-spyre-ppc64le-runtime
     - vllm-gaudi-runtime
     - vllm-spyre-x86-runtime

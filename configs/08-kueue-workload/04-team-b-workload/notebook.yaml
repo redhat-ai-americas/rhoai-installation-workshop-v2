@@ -12,7 +12,7 @@ metadata:
     opendatahub.io/mlflow-instance: mlflow
     opendatahub.io/connections: ''
     notebooks.opendatahub.io/inject-auth: 'true'
-    opendatahub.io/workbench-image-namespace: '' 
+    opendatahub.io/workbench-image-namespace: ''
   name: preemption-example
   namespace: team-b-kueue-example
   labels:
