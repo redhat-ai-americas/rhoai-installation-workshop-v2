@@ -1,23 +1,34 @@
 # RHOAI Operator Dependencies
 
-This section installs operators and supporting configuration that Red Hat OpenShift AI depends on.
+Installs operators and supporting configuration that Red Hat OpenShift AI depends on. These must be installed **before** the RHOAI operator.
+
+## Objectives
+
+- Install prerequisite operators for distributed workloads, observability, and Models-as-a-Service
+
+## Rationale
+
+RHOAI manages operands for many dependencies but does not install the underlying operators. Each dependency requires its own namespace, OperatorGroup, and Subscription (or equivalent).
+
+## Takeaways
+
+- Install **cert-manager Operator** before Leader Worker Set if not already present on the cluster
+- Connectivity Link (Kuadrant) provides API gateway and Authorino-based auth for MaaS
+- Kueue manages job queueing and quota for distributed AI workloads
+- OpenTelemetry and Tempo support RHOAI observability; Cluster Observability Operator unifies monitoring
+- After MaaS gateway deployment (section 04), restart Kuadrant so AuthPolicies are accepted (step 10)
 
 ## Documentation
 
 - [Red Hat OpenShift AI Self-Managed 3.4 documentation](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4)
-- [Installing and deploying OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install)
 - [Installing distributed workloads components](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed/installing-the-distributed-workloads-components_install)
-- [Leader Worker Set Operator (OpenShift 4.20)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/ai_workloads/leader-worker-set-operator)
-- [Govern LLM access with Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/index)
-- [Managing observability](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/managing-observability_managing-rhoai)
 - [Install Connectivity Link (Red Hat Connectivity Link 1.4)](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4/html-single/install_connectivity_link/index)
-- [OpenShift Container Platform Operators](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/operators/index)
 
 ## Setup Steps
 
 ### 00 - LeaderWorkerSet Operator
 
-Installs the LeaderWorkerSet operator used for multi-node distributed workloads.
+Installs the LeaderWorkerSet operator for multi-host inference where LLMs run across multiple nodes/devices.
 
 **Documentation:** [Installing the Leader Worker Set Operator](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/ai_workloads/leader-worker-set-operator#installing-the-leader-worker-set-operator)
 
@@ -47,7 +58,7 @@ oc apply -k configs/03-rhoai-operator-dependencies/02-jobset-operator
 
 ### 03 - Kueue Operator
 
-Installs the Red Hat build of Kueue operator for workload queue management and resource quotas.
+Installs the Red Hat build of Kueue for workload queue management and resource quotas.
 
 **Documentation:** [Managing workloads with Kueue](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/managing-workloads-with-kueue_managing-rhoai)
 
@@ -117,7 +128,7 @@ oc apply -k configs/03-rhoai-operator-dependencies/09-connectivity-link-kuadrant
 
 ### 10 - Connectivity Link TLS Setup
 
-Configures TLS for Authorino using the OpenShift service serving certificate.
+Configures TLS for Authorino using the OpenShift service serving certificate. Required for MaaS API validation and gateway auth policies.
 
 **Documentation:** [Configure TLS for MaaS](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html-single/govern_llm_access_with_models-as-a-service/index#configure-tls-for-maas_maas-deploy)
 
@@ -125,6 +136,15 @@ Configures TLS for Authorino using the OpenShift service serving certificate.
 ./configs/03-rhoai-operator-dependencies/10-connectivity-link-tls-setup/connectivity-link-tls-setup.sh
 ```
 
+## Validation
+
+Confirm dependency operators are installed:
+
+```bash
+oc get subscriptions -A | grep -E 'kueue|rhcl|opentelemetry|tempo|cluster-observability|leader-worker|job-set'
+oc get kuadrant kuadrant -n kuadrant-system
+```
+
 ## Additional Steps
 
-Since we are pinning the Cluster Observability Operator to 1.4.0 with a manual install, you will need to approve the install plan for the operator in the OpenShift Web Console.
+Approve the Cluster Observability Operator install plan in the OpenShift console if using a pinned manual install. After RHOAI gateway setup (section 04, step 07), run the Kuadrant restart script if MaaS AuthPolicies show `MissingDependency`.

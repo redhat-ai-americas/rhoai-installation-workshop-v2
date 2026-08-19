@@ -1,6 +1,24 @@
 # NVIDIA GPU Operator
 
-This section installs and configures the NVIDIA GPU Operator stack so the cluster can discover GPUs and schedule GPU workloads.
+Installs and configures the NVIDIA GPU Operator stack so the cluster discovers GPUs, installs drivers, and advertises `nvidia.com/gpu` for scheduling.
+
+
+## Objectives
+
+- Discover GPU hardware with Node Feature Discovery (NFD)
+- Install NVIDIA drivers, device plugin, DCGM, and container toolkit via the GPU Operator
+- Expose GPU metrics in the OpenShift console
+
+## Rationale
+
+RHOAI does not install or manage GPU drivers. NFD labels nodes with PCI vendor IDs (for example `nvidia.com/gpu.product: NVIDIA-L40S`), and the GPU Operator installs the stack required for CUDA workloads.
+
+## Takeaways
+
+- NFD uses PCI device class whitelists and vendor IDs to label hardware features on nodes
+- The NVIDIA device plugin exposes `nvidia.com/gpu`; MIG strategy and time-slicing are configurable on the ClusterPolicy
+- Wait 10–20 minutes after ClusterPolicy apply before troubleshooting; driver pods must reach `2/2` Ready
+- `nvidia.com/gpu` identifies GPU capacity, not GPU model; use node selectors, affinity, or Kueue for finer placement
 
 ## Documentation
 
@@ -20,6 +38,14 @@ Installs the Node Feature Discovery (NFD) operator, which labels nodes based on 
 oc apply -k configs/01-nvidia-gpu-operator/00-nfd-operator
 ```
 
+**Validation:**
+
+```bash
+oc get installplan -n openshift-nfd
+oc get csv -n openshift-nfd
+oc get pods -n openshift-nfd
+```
+
 ### 01 - NVIDIA GPU Operator
 
 Installs the NVIDIA GPU Operator, which manages NVIDIA drivers, device plugins, and related GPU components on the cluster.
@@ -28,6 +54,14 @@ Installs the NVIDIA GPU Operator, which manages NVIDIA drivers, device plugins, 
 
 ```bash
 oc apply -k configs/01-nvidia-gpu-operator/01-nvidia-gpu-operator
+```
+
+**Validation:**
+
+```bash
+oc get installplan -n nvidia-gpu-operator
+oc get csv -n nvidia-gpu-operator
+oc get pods -n nvidia-gpu-operator
 ```
 
 ### 02 - NFD Instance
@@ -40,9 +74,15 @@ Creates a NodeFeatureDiscovery instance so NFD begins labeling nodes with detect
 oc apply -k configs/01-nvidia-gpu-operator/02-nfd-instance
 ```
 
+**Validation:** Confirm GPU PCI labels on worker nodes (NVIDIA vendor ID `10de`):
+
+```bash
+oc describe node | egrep 'Roles|pci-10de' | grep -v master
+```
+
 ### 03 - NVIDIA GPU Instance
 
-Deploys the NVIDIA ClusterPolicy that configures drivers, device plugins, and monitoring components for GPU nodes.
+Deploys the NVIDIA ClusterPolicy that configures drivers, device plugins, DCGM exporter, and GPU node tolerations for `nvidia.com/gpu`.
 
 **Documentation:** [Create the ClusterPolicy instance on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#create-the-clusterpolicy-instance)
 
@@ -50,15 +90,31 @@ Deploys the NVIDIA ClusterPolicy that configures drivers, device plugins, and mo
 oc apply -k configs/01-nvidia-gpu-operator/03-nvidia-gpu-instance
 ```
 
+**Validation:**
+
+```bash
+oc get pod -l openshift.driver-toolkit -n nvidia-gpu-operator -w
+```
+
+Driver pods must reach `2/2` Ready before GPUs are schedulable. Label GPU nodes for readability:
+
+```bash
+oc get nodes
+```
+
 ### 04 - Optional NVIDIA Monitoring Dashboard
 
-Adds a DCGM exporter Grafana dashboard to the OpenShift console for viewing GPU metrics.
+Adds a DCGM exporter Grafana dashboard to the OpenShift console for viewing GPU metrics (utilization, memory, temperature, power, tensor core usage).
 
-**Documentation:** [GPU Operator monitoring on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html)
+**Rationale:** Provides system-level GPU monitoring for capacity planning and usage, not functional ML model monitoring.
+
+**Documentation:** [Enable the GPU monitoring dashboard](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html)
 
 ```bash
 oc apply -k configs/01-nvidia-gpu-operator/04-optional-nvidia-monitoring-dashboard
 ```
+
+**Validation:** In the OpenShift console, open **Observe** > **Dashboards** and locate the NVIDIA DCGM exporter dashboard (Administrator or Developer perspective).
 
 ### 05 - Optional NVIDIA Console Plugin
 
@@ -72,6 +128,4 @@ oc apply -k configs/01-nvidia-gpu-operator/05-optional-nvidia-console-plugin
 
 ## Additional Steps
 
-At this point in time, the GPU node should hopefully be up and running.
-
-Using the OpenShift Web Console, view the pods on the GPU node and track the status of the NVIDIA pods.
+Review GPU node pods in the OpenShift console. For GPU sharing (time-slicing, MPS, MIG), see [NVIDIA GPU sharing methods](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/time-slicing-gpus-in-openshift.html) and [OpenShift NVIDIA GPU architecture overview](https://docs.openshift.com/container-platform/4.20/architecture/nvidia-gpu-architecture-overview.html).

@@ -1,14 +1,31 @@
 # RHOAI Setup
 
-This section installs and configures Red Hat OpenShift AI on the cluster.
+Installs and configures Red Hat OpenShift AI: operator, DataScienceCluster, gateways, MaaS, MLflow, and dashboard customization.
+
+
+## Objectives
+
+- Install RHOAI and enable required components
+- Prepare the cluster for data scientist personas (hardware profiles, pipelines, model serving)
+- Configure Models-as-a-Service gateway, database, and observability
+
+## Rationale
+
+Installing OpenShift AI is not the last step—workloads need GPU resources advertised, sufficient non-GPU capacity, object storage, and gateway auth before users can work effectively.
+
+## Takeaways
+
+- RHOAI 3.0+ requires OpenShift 4.19+
+- DataScienceCluster components can be `Managed`, `Removed`, or `Unmanaged`
+- Hardware profiles are required in RHOAI 3.x to assign GPU resources to workbenches and serving runtimes
+- If GPU nodes use `nvidia.com/gpu` taints, hardware profiles must include matching tolerations
+- Do not install ISV applications in `redhat-ods-*` namespaces
 
 ## Documentation
 
 - [Red Hat OpenShift AI Self-Managed 3.4 documentation](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4)
-- [Installing and uninstalling OpenShift AI Self-Managed](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed/index)
-- [Administer OpenShift AI platform access, apps, and operations](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/index)
-- [Managing observability](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/managing-observability_managing-rhoai)
-- [Configuring your model-serving platform](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/configuring_your_model-serving_platform/index)
+- [Installing and deploying OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install)
+- [Working with hardware profiles](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_accelerators/working-with-hardware-profiles_accelerators)
 
 ## Setup Steps
 
@@ -22,14 +39,28 @@ Installs the Red Hat OpenShift AI operator from OperatorHub.
 oc apply -k configs/04-rhoai-setup/00-rhoai-operator
 ```
 
+**Validation:**
+
+```bash
+oc get projects | grep -E 'redhat-ods|rhods'
+oc describe dscinitialization default-dsci -n redhat-ods-operator
+```
+
+Expected projects include `redhat-ods-applications`, `redhat-ods-monitoring`, and `redhat-ods-operator`.
+
 ### 01 - DataScienceCluster
 
-Creates the DataScienceCluster instance that enables OpenShift AI components such as the dashboard, workbenches, KServe, and training.
-
-**Documentation:** [Installing and managing Red Hat OpenShift AI components](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install)
+Creates the DataScienceCluster instance that enables dashboard, workbenches, KServe, training, and other components.
 
 ```bash
 oc apply -k configs/04-rhoai-setup/01-datasciencecluster
+```
+
+**Validation:**
+
+```bash
+oc wait --for=jsonpath='{.status.phase}'=Ready datasciencecluster default-dsc -n redhat-ods-operator --timeout=15m
+oc get DataScienceCluster,DSCInitialization -n redhat-ods-operator
 ```
 
 ### 02 - Observability
@@ -84,13 +115,19 @@ oc apply -k configs/04-rhoai-setup/06-maas-connection
 
 ### 07 - Restart Kuadrant
 
-Restarts Kuadrant operators so AuthPolicies are accepted after the OpenShift AI gateway and MaaS database connection are ready. Required for MaaS API authentication (for example, the dashboard tokens page).
-
-**Documentation:** [Install Connectivity Link from the CLI](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4/html-single/install_connectivity_link/index#install-connectivity-link-on-openshift-container-platform-from-the-cli), [Configure TLS for MaaS](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html-single/govern_llm_access_with_models-as-a-service/index#configure-tls-for-maas_maas-deploy)
+Restarts Kuadrant operators so AuthPolicies are accepted after the gateway and MaaS connection are ready. Required for MaaS API authentication (for example, the dashboard tokens page).
 
 ```bash
 ./configs/04-rhoai-setup/07-restart-kuadrant/restart-kuadrant.sh
 ```
+
+**Validation:**
+
+```bash
+oc get authpolicy -A -o custom-columns='NS:.metadata.namespace,NAME:.metadata.name,ACCEPTED:.status.conditions[?(@.type=="Accepted")].status'
+```
+
+AuthPolicies should show `Accepted=True`.
 
 ### 08 - MLflow
 
@@ -104,12 +141,22 @@ oc apply -k configs/04-rhoai-setup/08-mlflow
 
 ### 09 - Hardware Profiles
 
-Creates NVIDIA GPU hardware profiles for model serving and workbench workloads in the OpenShift AI dashboard.
+Creates NVIDIA GPU hardware profiles for model serving and workbench workloads, including `nvidia.com/gpu` tolerations when GPU nodes are tainted.
+
+**Objectives:** Assign accelerator resources through RHOAI hardware profiles so the dashboard can schedule GPU workbenches and serving runtimes.
 
 **Documentation:** [Working with hardware profiles](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_accelerators/working-with-hardware-profiles_accelerators)
 
 ```bash
 oc apply -k configs/04-rhoai-setup/09-hardware-profiles
+```
+
+
+**Validation:**
+
+```bash
+oc get nodes -l nvidia.com/gpu.machine -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.allocatable.nvidia\.com/gpu}{"\n"}{end}'
+oc get hardwareprofile -n redhat-ods-applications
 ```
 
 ### 10 - Dashboard Customization
@@ -124,16 +171,6 @@ oc apply -k configs/04-rhoai-setup/10-dashboard-customization
 
 ## Additional Steps
 
-A number of additional items can be reviewed at this stage.
-
-Review the configuration of the MaaS Gateway, including the host URL configuration requirements, and the gateway namespace admissions requirements.
-
-Review the MaaS Database and the connection details.
-
-The MLFlow instance should now be accessible.
-
-The hardware profiles can be reviewed.
-
-The Serving Runtime customizations can be reviewed.
-
-The dev user should now be able to create a workbench.
+- Verify GPU nodes show allocatable `nvidia.com/gpu` before creating workbenches
+- Review MaaS gateway host URL and namespace admission labels
+- The `dev` user should be able to create a GPU workbench after hardware profiles are applied
