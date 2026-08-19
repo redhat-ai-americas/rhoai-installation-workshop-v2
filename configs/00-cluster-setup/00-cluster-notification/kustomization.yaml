@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - banner-bootcamp.yaml
+  - workshop-repo-link.yaml

@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: github-demo-gitops
+spec:
+  href: 'https://github.com/redhat-ai-americas/rhoai-installation-workshop-v2'
+  location: ApplicationMenu
+  text: GitHub - RHOAI Installation Workshop
+  applicationMenu:
+    section: Git Repos
+    imageURL: /static/assets/public/imgs/logos/github.svg
