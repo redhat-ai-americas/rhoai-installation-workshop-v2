@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: cuda-vectoradd
+  labels:
+    app: cuda-vectoradd
 spec:
   restartPolicy: OnFailure
   securityContext:
