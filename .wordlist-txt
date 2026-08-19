@@ -28,6 +28,7 @@ CUDA
 CheCluster
 CloudEvents
 ClusterIssuer
+ClusterOperator
 ClusterPolicy
 ClusterQueues
 ClusterRole
@@ -65,6 +66,7 @@ Eventing
 FullAccess
 GPUs
 GatewayClass
+Gaudi
 GenAI
 Gi
 GitOps
@@ -77,6 +79,7 @@ IAM
 IDMS
 IOV
 ISCP
+ISV
 ITMS
 IgnoreExtraneous
 ImageSetConfiguration
@@ -104,6 +107,7 @@ Kyverno
 LDAP
 LLM
 LLMInferenceService
+LLMs
 LM
 LVM
 LeaderWorkerSet
@@ -113,6 +117,7 @@ LlamaStack
 Logstash
 MLOps
 MLflow
+MPS
 MTA
 MaaS
 MachineConfig
@@ -138,6 +143,7 @@ OLM
 ONNX
 OSSM
 ObjectBucketClaim
+ObjectBucketClaims
 Observability
 OpenDataHub
 OpenShift
@@ -148,11 +154,13 @@ OperatorGroup
 OperatorHub
 PCI
 PV
+PodSecurity
 PolicyReport
 Postinstallation
 Prometheus
 Quarkus
 Querier
+RADOS
 RBAC
 README
 READMEs
@@ -208,6 +216,7 @@ agentic
 ai
 aipipelines
 aiservices
+allocatable
 amq
 anythingllm
 api
@@ -303,6 +312,7 @@ kataconfig
 kiali
 knative
 kserve
+kube
 kubeadmin
 kubectl
 kubeseal
@@ -367,6 +377,7 @@ psql
 pvc
 py
 pyspelling
+queueing
 rawdeployments
 rbac
 rebase
