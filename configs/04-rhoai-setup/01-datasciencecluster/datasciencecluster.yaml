@@ -22,7 +22,7 @@ spec:
       rawDeploymentServiceConfig: Headed
     kueue:
       managementState: Unmanaged
-    llamastackoperator:
+    ogx:
       managementState: Managed
     mlflowoperator:
       managementState: Managed
