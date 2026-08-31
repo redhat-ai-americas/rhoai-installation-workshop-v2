@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - dsc-init.yaml
+  - maas-default-tenant.yaml
