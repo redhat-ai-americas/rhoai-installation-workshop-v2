@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-patch_route_host() {
+GATEWAY_NS="${GATEWAY_NS:-openshift-ingress}"
+GATEWAY_NAME="${GATEWAY_NAME:-maas-default-gateway}"
+ROUTE_NAME="${ROUTE_NAME:-maas-gateway-route}"
+
+resolve_route_host() {
   CONSOLE_URL=$(oc whoami --show-console)
   if [ -z "${CONSOLE_URL}" ]; then
     echo "Failed to retrieve console URL from oc whoami --show-console"
@@ -18,17 +23,62 @@ patch_route_host() {
 
   ROUTE_HOST="maas.apps.${CLUSTER_URL}"
   echo "Target route host: ${ROUTE_HOST}"
+}
 
-  CURRENT_HOST=$(oc get route maas-gateway-route -n openshift-ingress -o=jsonpath='{.spec.host}')
+patch_route_host() {
+  CURRENT_HOST=$(oc get route "${ROUTE_NAME}" -n "${GATEWAY_NS}" -o=jsonpath='{.spec.host}')
   if [ "${CURRENT_HOST}" = "${ROUTE_HOST}" ]; then
     echo "Route host is already set to ${ROUTE_HOST}"
     return 0
   fi
 
-  echo "Patching maas-gateway-route in openshift-ingress"
-  oc patch route maas-gateway-route -n openshift-ingress \
+  echo "Patching route/${ROUTE_NAME} in ${GATEWAY_NS}"
+  oc patch route "${ROUTE_NAME}" -n "${GATEWAY_NS}" \
     --type=merge \
     -p "{\"spec\":{\"host\":\"${ROUTE_HOST}\"}}"
 }
 
+patch_gateway_hostname() {
+  local listener_count index current_hostname op patch_ops="" needs_patch=0
+
+  listener_count=$(oc get gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" \
+    -o go-template='{{len .spec.listeners}}')
+
+  if [ "${listener_count}" -eq 0 ]; then
+    echo "No listeners found on gateway/${GATEWAY_NAME}"
+    return 1
+  fi
+
+  for ((index=0; index<listener_count; index++)); do
+    current_hostname=$(oc get gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" \
+      -o jsonpath="{.spec.listeners[${index}].hostname}")
+
+    if [ "${current_hostname}" = "${ROUTE_HOST}" ]; then
+      continue
+    fi
+
+    needs_patch=1
+    if [ -n "${current_hostname}" ]; then
+      op="replace"
+    else
+      op="add"
+    fi
+
+    if [ -n "${patch_ops}" ]; then
+      patch_ops+=","
+    fi
+    patch_ops+="{\"op\":\"${op}\",\"path\":\"/spec/listeners/${index}/hostname\",\"value\":\"${ROUTE_HOST}\"}"
+  done
+
+  if [ "${needs_patch}" -eq 0 ]; then
+    echo "Gateway listener hostnames are already set to ${ROUTE_HOST}"
+    return 0
+  fi
+
+  echo "Patching gateway/${GATEWAY_NAME} listener hostnames in ${GATEWAY_NS}"
+  oc patch gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" --type=json -p="[${patch_ops}]"
+}
+
+resolve_route_host
 patch_route_host
+patch_gateway_hostname
