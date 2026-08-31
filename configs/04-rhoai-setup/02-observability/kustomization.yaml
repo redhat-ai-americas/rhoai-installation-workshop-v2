@@ -3,4 +3,3 @@ kind: Kustomization
 
 resources:
   - dsc-init.yaml
-  - tenant.yaml
