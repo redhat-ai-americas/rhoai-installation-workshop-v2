@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inference-gw-options
+  namespace: openshift-ingress
+data:
+  deployment: |
+    spec:
+      template:
+        spec:
+          containers:
+            - name: istio-proxy
+              resources:
+                limits:
+                    memory: 2Gi
