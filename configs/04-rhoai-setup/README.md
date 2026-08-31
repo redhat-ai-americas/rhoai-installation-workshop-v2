@@ -93,32 +93,66 @@ Creates the Models as a Service gateway, route, and TLS configuration for authen
 oc apply -k configs/04-rhoai-setup/04-maas-gateway
 ```
 
-### 05 - MaaS Database
+**TLS:** The Route uses **passthrough** termination. The hostname job sets both the Route host and `spec.listeners[].hostname` on the Gateway (required for `maas-api` URL discovery). The Gateway terminates TLS with the cluster ingress wildcard certificate (`cert-manager-ingress-cert` in `openshift-ingress`), so `curl` works without `-k` on OpenTLC clusters.
+
+**Prerequisite:** `cert-manager-ingress-cert` must exist in `openshift-ingress` (provisioned by the cluster cert-manager setup). Verify with:
+
+```bash
+oc get secret cert-manager-ingress-cert -n openshift-ingress
+```
+
+**Validation:**
+
+```bash
+ROUTE_HOST=$(oc get route maas-gateway-route -n openshift-ingress -o jsonpath='{.spec.host}')
+curl -s -o /dev/null -w "%{http_code}\n" \
+  -H "Authorization: Bearer $(oc whoami -t)" \
+  "https://${ROUTE_HOST}/v1/models"
+# Expected: 200
+```
+
+**Troubleshooting "maas-api is not available":** Confirm the hostname job completed and the Gateway listener has a hostname:
+
+```bash
+oc get jobs job-patch-route-host -n openshift-ingress
+oc get gateway maas-default-gateway -n openshift-ingress -o jsonpath='{.spec.listeners[0].hostname}{"\n"}'
+oc logs -n redhat-ods-applications deploy/maas-ui --tail=10
+```
+
+### 05 - Namespace Gateway Access
+
+Labels namespaces with `maas-gateway-access` so HTTPRoutes can attach to the MaaS gateway.
+
+```bash
+oc apply -k configs/04-rhoai-setup/05-namespace-gateway-access
+```
+
+### 06 - MaaS Database
 
 Deploys a PostgreSQL database used by Models as a Service.
 
 **Documentation:** [Govern LLM access with Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/index)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/05-maas-database
+oc apply -k configs/04-rhoai-setup/06-maas-database
 ```
 
-### 06 - MaaS Connection
+### 07 - MaaS Connection
 
 Creates the database connection secret that links Models as a Service to the PostgreSQL database.
 
 **Documentation:** [Deploy and manage Models-as-a-Service](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/govern_llm_access_with_models-as-a-service/deploy-and-manage-models-as-a-service_maas)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/06-maas-connection
+oc apply -k configs/04-rhoai-setup/07-maas-connection
 ```
 
-### 07 - Restart Kuadrant
+### 08 - Restart Kuadrant
 
 Restarts Kuadrant operators so AuthPolicies are accepted after the gateway and MaaS connection are ready. Required for MaaS API authentication (for example, the dashboard tokens page).
 
 ```bash
-./configs/04-rhoai-setup/07-restart-kuadrant/restart-kuadrant.sh
+./configs/04-rhoai-setup/08-restart-kuadrant/restart-kuadrant.sh
 ```
 
 **Validation:**
@@ -129,17 +163,17 @@ oc get authpolicy -A -o custom-columns='NS:.metadata.namespace,NAME:.metadata.na
 
 AuthPolicies should show `Accepted=True`.
 
-### 08 - MLflow
+### 09 - MLflow
 
 Deploys an MLflow instance for experiment tracking and model artifacts.
 
 **Documentation:** [Install and configure MLflow](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_mlflow/installing-mlflow_mlflow)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/08-mlflow
+oc apply -k configs/04-rhoai-setup/09-mlflow
 ```
 
-### 09 - Hardware Profiles
+### 10 - Hardware Profiles
 
 Creates NVIDIA GPU hardware profiles for model serving and workbench workloads, including `nvidia.com/gpu` tolerations when GPU nodes are tainted.
 
@@ -148,7 +182,7 @@ Creates NVIDIA GPU hardware profiles for model serving and workbench workloads, 
 **Documentation:** [Working with hardware profiles](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_accelerators/working-with-hardware-profiles_accelerators)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/09-hardware-profiles
+oc apply -k configs/04-rhoai-setup/10-hardware-profiles
 ```
 
 
@@ -159,14 +193,14 @@ oc get nodes -l nvidia.com/gpu.machine -o jsonpath='{range .items[*]}{.metadata.
 oc get hardwareprofile -n redhat-ods-applications
 ```
 
-### 10 - Dashboard Customization
+### 11 - Dashboard Customization
 
 Customizes the OpenShift AI dashboard, including Gen AI Studio, observability, and available serving runtime templates.
 
 **Documentation:** [Enable the observability dashboard in the UI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/managing-observability_managing-rhoai#enable-the-observability-dashboard-in-the-ui), [Administer OpenShift AI platform access, apps, and operations](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/managing_openshift_ai/index)
 
 ```bash
-oc apply -k configs/04-rhoai-setup/10-dashboard-customization
+oc apply -k configs/04-rhoai-setup/11-dashboard-customization
 ```
 
 ## Additional Steps
