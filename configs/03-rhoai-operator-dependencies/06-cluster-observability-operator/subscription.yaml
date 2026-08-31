@@ -5,11 +5,7 @@ metadata:
   namespace: openshift-cluster-observability-operator
 spec:
   channel: stable
-  # installPlanApproval: Automatic
+  installPlanApproval: Automatic
   name: cluster-observability-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  # Pin the version to 1.4.0 to avoid issues with the latest version.
-  # The install plan must be manually approved.
-  installPlanApproval: Manual
-  startingCSV: cluster-observability-operator.v1.4.0
