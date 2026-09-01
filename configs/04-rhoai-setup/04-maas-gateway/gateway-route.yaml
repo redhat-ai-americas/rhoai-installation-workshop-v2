@@ -1,7 +1,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: maas-default-gateway-https
+  name: maas-gateway-route
   namespace: openshift-ingress
 spec:
   # Replace with your actual hostname.

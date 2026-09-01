@@ -39,7 +39,8 @@ patch_route_host() {
 }
 
 patch_gateway_hostname() {
-  local listener_count index current_hostname op patch_ops="" needs_patch=0
+  local listener_count index current_hostname listener_name op patch_ops="" needs_patch=0
+  local listener_names="" patch_listener_names=""
 
   listener_count=$(oc get gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" \
     -o go-template='{{len .spec.listeners}}')
@@ -50,6 +51,8 @@ patch_gateway_hostname() {
   fi
 
   for ((index=0; index<listener_count; index++)); do
+    listener_name=$(oc get gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" \
+      -o jsonpath="{.spec.listeners[${index}].name}")
     current_hostname=$(oc get gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" \
       -o jsonpath="{.spec.listeners[${index}].hostname}")
 
@@ -71,11 +74,11 @@ patch_gateway_hostname() {
   done
 
   if [ "${needs_patch}" -eq 0 ]; then
-    echo "Gateway listener hostnames are already set to ${ROUTE_HOST}"
+    echo "Gateway listener ${listener_name} hostnames are already set to ${ROUTE_HOST} "
     return 0
   fi
 
-  echo "Patching gateway/${GATEWAY_NAME} listener hostnames in ${GATEWAY_NS}"
+  echo "Patching gateway/${GATEWAY_NAME} listener ${listener_name} hostname in ${GATEWAY_NS}"
   oc patch gateway "${GATEWAY_NAME}" -n "${GATEWAY_NS}" --type=json -p="[${patch_ops}]"
 }
 

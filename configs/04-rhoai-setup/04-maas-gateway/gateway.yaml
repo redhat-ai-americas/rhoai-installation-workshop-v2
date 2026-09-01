@@ -18,17 +18,6 @@ spec:
       kind: ConfigMap
       name: maas-gw-options
   listeners:
-    - name: http
-      # Hostname is set by route-hostname-job/patch-route-host.sh
-      # hostname: maas.apps.cluster-p9dq2.p9dq2.sandbox2790.opentlc.com
-      port: 80
-      protocol: HTTP
-      allowedRoutes:
-        namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              maas.opendatahub.io/gateway-access: "true"
     - name: https
       # Hostname is set by route-hostname-job/patch-route-host.sh
       # hostname: maas.apps.cluster-p9dq2.p9dq2.sandbox2790.opentlc.com      port: 443
