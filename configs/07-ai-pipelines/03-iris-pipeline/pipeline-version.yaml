@@ -5,9 +5,8 @@ metadata:
   namespace: ai-pipeline-example
   labels:
     pipelines.kubeflow.org/pipeline: iris-pipeline
-    pipelines.kubeflow.org/pipeline-id: b0be6e5e-ceba-4126-bd9e-ac6228ad5094
 spec:
-  displayName: iris-pipeline
+  displayName: 'iris-pipeline_version_manual'
   pipelineName: iris-pipeline
   pipelineSpec:
     components:
@@ -507,3 +506,4 @@ spec:
             parameterType: STRING
     schemaVersion: 2.1.0
     sdkVersion: kfp-2.13.0
+  versionName: iris-pipeline-version-manual
