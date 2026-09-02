@@ -8,4 +8,4 @@ When requesting the AWS with OpenShift Open Environment, the following settings 
 
 ![AWS with OpenShift Open Environment - Cluster Settings](images/aws-open-environment-cluster-settings.png)
 
-Be sure to select teh `m6a.4xlarge` control plane instance type as smaller instance types may experience out of memory errors.
+Be sure to select the `m6a.4xlarge` control plane instance type as smaller instance types may experience out of memory errors.
