@@ -10,9 +10,7 @@ oc apply -k configs/<section>/<step>
 
 ## Cluster Recommendations
 
-This workshop was built and testing using OpenShift 4.20.31+.
-
-If using the Red Hat Demo Platform, the `AWS with OpenShift Open Environment` is the recommended catalog item.  Be sure to request the `m6a.4xlarge` Control Plane Instance Type.
+Please see the [Cluster Provisioning](./CLUSTER_PROVISIONING.md) section for details on requesting a demo cluster.
 
 ## Documentation
 
