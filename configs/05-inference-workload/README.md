@@ -82,12 +82,18 @@ Stops the deployed LLM inference service to free GPU resources after testing.
 
 Provision an API key from the OpenShift AI dashboard (**MaaS** > **Tokens**) or the MaaS API. Stop the model server when finished so GPUs are available for [08 - Kueue Workload](configs/08-kueue-workload/README.md).
 
-### Example Chat Completions
+### MaaS Endpoint Examples
 
 ```bash
-curl --location 'https://maas.apps.<cluster-url>/model-server/llama-3-2-1b-instruct/v1/chat/completions' \
+MAAS_TOKEN="sk-oai-<token>"
+MAAS_ROUTE="https://$(oc get route maas-gateway-route -n openshift-ingress -o jsonpath='{.spec.host}')"
+
+curl "${MAAS_ROUTE}/model-server/llama-3-2-1b-instruct/v1/models" \
+  --header "Authorization: Bearer ${MAAS_TOKEN}"
+
+curl -X POST --location "${MAAS_ROUTE}/model-server/llama-3-2-1b-instruct/v1/chat/completions" \
   --header 'Content-Type: application/json' \
-  --header 'Authorization: Bearer sk-oai-<token>' \
+  --header "Authorization: Bearer ${MAAS_TOKEN}" \
   --data '{
     "model": "meta-llama/llama-3.2-1b-instruct",
     "messages": [
@@ -98,5 +104,25 @@ curl --location 'https://maas.apps.<cluster-url>/model-server/llama-3-2-1b-instr
     ],
     "temperature": 0.7,
     "max_tokens": 100
+  }'
+  
+
+
+curl "${MAAS_ROUTE}/v1/models" \
+  --header "Authorization: Bearer ${MAAS_TOKEN}"
+
+curl -X POST --location "${MAAS_ROUTE}/v1/chat/completions" \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: Bearer ${MAAS_TOKEN}" \
+  --data '{
+    "model": "publishers/model-server/models/meta-llama/llama-3.2-1b-instruct",
+    "messages": [
+        {
+            "role": "user",
+            "content": "Give me a brief history of Linux?"
+        }
+    ],
+    "temperature": 0.7,
+    "max_tokens": 1000
   }'
 ```

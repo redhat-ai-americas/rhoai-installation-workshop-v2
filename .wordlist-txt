@@ -73,6 +73,7 @@ GitOps
 Gitea
 HPC
 HTPasswd
+HTTPRoutes
 Hashicorp
 HuggingFace
 IAM
@@ -288,6 +289,7 @@ gp
 gpu
 grafana
 homelab
+hostname
 html
 htpass
 https
@@ -365,6 +367,7 @@ operatorGroup
 operatorGroups
 parallelize
 param
+passthrough
 patchesJson
 performant
 pgvector

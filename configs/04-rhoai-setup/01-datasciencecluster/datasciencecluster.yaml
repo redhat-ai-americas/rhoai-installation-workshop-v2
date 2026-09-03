@@ -15,14 +15,19 @@ spec:
       managementState: Removed
     kserve:
       managementState: Managed
-      modelsAsService:
-        managementState: Managed
       nim:
         managementState: Removed
       rawDeploymentServiceConfig: Headed
+      wva:
+        managementState: Removed
+      modelCache:
+        managementState: Removed
     kueue:
       managementState: Unmanaged
-    llamastackoperator:
+      autoCreateQueues: false
+      defaultClusterQueueName: default
+      defaultLocalQueueName: default
+    ogx:
       managementState: Managed
     mlflowoperator:
       managementState: Managed
@@ -42,3 +47,9 @@ spec:
     workbenches:
       managementState: Managed
       workbenchNamespace: rhods-notebooks
+    sparkoperator:
+      managementState: Removed
+    aigateway:
+      managementState: Managed
+      modelsAsAService:
+        managementState: Managed

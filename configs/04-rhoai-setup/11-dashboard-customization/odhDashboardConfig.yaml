@@ -14,6 +14,7 @@ spec:
     disableTracking: false
     observabilityDashboard: true  # Enable observability dashboard TP feature
     genAiStudio: true  # Enable genAI studio TP feature
+    externalModels: true # Enable external models
   hardwareProfileOrder: []
   notebookController:
     enabled: true

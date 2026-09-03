@@ -2,7 +2,7 @@
 # Restart Kuadrant operators after the OpenShift AI gateway (Istio / Gateway API) is
 # ready so AuthPolicies are accepted and MaaS gateway auth headers are injected.
 #
-# Run after steps 04 (MaaS gateway), 05 (MaaS database), and 06 (MaaS connection).
+# Run after steps 04 (MaaS gateway), 05 (namespace gateway access), 06 (MaaS database), and 07 (MaaS connection).
 # See: https://github.com/opendatahub-io/models-as-a-service/issues/330
 
 set -euo pipefail

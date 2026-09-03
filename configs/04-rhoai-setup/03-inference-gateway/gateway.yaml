@@ -14,4 +14,4 @@ spec:
           from: Selector
           selector:
             matchLabels:
-              inference-gateway-access: "true"
+              inference.opendatahub.io/gateway-access: 'true'

@@ -5,4 +5,4 @@ metadata:
   labels:
     kubernetes.io/metadata.name: model-server
     opendatahub.io/dashboard: 'true'
-    maas-gateway-access: 'true'
+    maas.opendatahub.io/gateway-access: 'true'
