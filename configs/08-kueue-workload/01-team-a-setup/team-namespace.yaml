@@ -4,5 +4,5 @@ metadata:
   name: team-a-kueue-example
   labels:
     opendatahub.io/dashboard: 'true'
-    maas-gateway-access: 'true'
+    maas.opendatahub.io/gateway-access: 'true'
     kueue.openshift.io/managed: 'true'
