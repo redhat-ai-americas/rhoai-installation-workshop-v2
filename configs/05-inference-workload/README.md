@@ -88,6 +88,8 @@ Provision an API key from the OpenShift AI dashboard (**MaaS** > **Tokens**) or 
 MAAS_TOKEN="sk-oai-<token>"
 MAAS_ROUTE="https://$(oc get route maas-gateway-route -n openshift-ingress -o jsonpath='{.spec.host}')"
 
+echo ${MAAS_ROUTE}
+
 curl "${MAAS_ROUTE}/model-server/llama-3-2-1b-instruct/v1/models" \
   --header "Authorization: Bearer ${MAAS_TOKEN}"
 
@@ -105,8 +107,6 @@ curl -X POST --location "${MAAS_ROUTE}/model-server/llama-3-2-1b-instruct/v1/cha
     "temperature": 0.7,
     "max_tokens": 100
   }'
-  
-
 
 curl "${MAAS_ROUTE}/v1/models" \
   --header "Authorization: Bearer ${MAAS_TOKEN}"
