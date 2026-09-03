@@ -161,9 +161,8 @@ wait_for_kuadrant_ready() {
 }
 
 restart_operators() {
-  echo "Restarting Kuadrant operators in ${KUADRANT_NS}..."
-  oc rollout restart "deployment/${KUADRANT_OPERATOR_DEPLOY}" -n "${KUADRANT_NS}"
-  oc rollout restart "deployment/${AUTHORINO_OPERATOR_DEPLOY}" -n "${KUADRANT_NS}"
+  echo "Restarting Kuadrant pods in ${KUADRANT_NS}..."
+  oc delete pods --all -n "${KUADRANT_NS}"
 
   wait_for_rollout "${KUADRANT_OPERATOR_DEPLOY}"
   wait_for_rollout "${AUTHORINO_OPERATOR_DEPLOY}"
