@@ -40,17 +40,21 @@ Creates a local `.htpasswd` file with `admin` and `dev` users for the HTPasswd i
 
 Configures an HTPasswd identity provider with local `admin` and `dev` users for signing into the cluster.
 
+This step is non-destructive. Instead of replacing `spec.identityProviders`, the `configure-htpasswd-idp.sh` script appends the HTPasswd provider to any identity providers already configured on the cluster (for example, a pre-existing SSO provider on sandbox environments), and pre-maps HTPasswd identities onto users that already exist so `claim` mapping cannot conflict with them.
+
 **Documentation:** [Understanding identity provider configuration](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/authentication_and_authorization/understanding-identity-provider)
 
 ```bash
 oc apply -k configs/00-cluster-setup/02-user-auth
+./configs/00-cluster-setup/02-user-auth/configure-htpasswd-idp.sh
 ```
 
 **Validation:**
 
 ```bash
 oc get secret htpasswd-local -n openshift-config
-oc get oauth cluster -o yaml | grep -A5 htpasswd
+oc get oauth cluster -o jsonpath='{.spec.identityProviders[*].name}'
+oc get identities
 ```
 
 Wait for the `authentication` ClusterOperator to cycle and return to Available after applying OAuth configuration.

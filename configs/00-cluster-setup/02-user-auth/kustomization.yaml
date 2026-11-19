@@ -3,8 +3,7 @@ kind: Kustomization
 
 namespace: openshift-config
 
-resources:
-  - htpasswd-oauth-provider.yaml
+resources: []
 
 generatorOptions:
   disableNameSuffixHash: true
