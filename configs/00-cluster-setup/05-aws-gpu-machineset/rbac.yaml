@@ -28,6 +28,7 @@ rules:
   - secrets
   resourceNames:
   - aws-creds
+  - aws-cloud-credentials
   verbs:
   - get
   - list

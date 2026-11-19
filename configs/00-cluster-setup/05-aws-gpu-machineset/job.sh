@@ -3,9 +3,17 @@
 
 set -e
 
-ocp_aws_cluster(){
+ocp_ipi_aws_cluster(){
   TARGET_NS=kube-system
   OBJ=secret/aws-creds
+  echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
+  oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
+  echo "AWS cluster detected"
+}
+
+ocp_aws_cluster(){
+  TARGET_NS=openshift-machine-api
+  OBJ=secret/aws-cloud-credentials
   echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
   oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
   echo "AWS cluster detected"
@@ -102,6 +110,6 @@ YAML
 
 INSTANCE_TYPE=${INSTANCE_TYPE:-g4dn.4xlarge}
 
-ocp_aws_cluster || exit 0
+ocp_aws_cluster || ocp_ipi_aws_cluster || exit 0
 ocp_aws_create_gpu_machineset ${INSTANCE_TYPE}
 ocp_create_machineset_autoscale
