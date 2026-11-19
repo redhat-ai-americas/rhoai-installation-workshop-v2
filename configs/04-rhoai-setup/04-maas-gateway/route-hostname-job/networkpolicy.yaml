@@ -1,0 +1,30 @@
+# The sandbox baseline in openshift-ingress ("openshift-ingress-deny-all") applies
+# default-deny Ingress+Egress to every pod in the namespace; only gateway/router
+# workloads carry -allow exceptions. Without an exception, the job pod cannot
+# reach the Kubernetes API, so its first `oc whoami --show-console` times out and
+# every job attempt fails with BackoffLimitExceeded, leaving the Route host
+# unpatched (and MaasTenantConfig stuck in GatewayNotReady).
+#
+# NOTE: we allow ALL egress for the job's pods rather than an ipBlock pin on the
+# API service IP (172.30.0.1/32): OVN-K policy matching against a service
+# ClusterIP is unreliable (enforcement interacts with service DNAT), so a
+# precise ipBlock allow did NOT punch through the deny-all in practice. An
+# empty egress rule (allow-all) is immune to that. Scope is limited to the
+# short-lived job pods via the job-name label.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-job-patch-route-host-egress
+  namespace: openshift-ingress
+spec:
+  podSelector:
+    matchExpressions:
+      - key: job-name # label the Job controller puts on the job's pods
+        operator: In
+        values:
+          - job-patch-route-host
+  policyTypes:
+    - Egress
+  egress:
+    # Empty rule = allow all egress for matching pods only
+    - {}

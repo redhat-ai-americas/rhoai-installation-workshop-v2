@@ -93,6 +93,14 @@ Creates the Models as a Service gateway, route, and TLS configuration for authen
 oc apply -k configs/04-rhoai-setup/04-maas-gateway
 ```
 
+**NetworkPolicy note:** sandboxes that ship the `openshift-ingress-deny-all` baseline
+(default-deny Ingress+Egress on every pod in the namespace) block the route-hostname
+job's egress to the Kubernetes API, so all attempts fail with `BackoffLimitExceeded`
+and the Route host stays unpatched. The component therefore includes
+`networkpolicy.yaml`, which allows egress to the API (172.30.0.1:443) and cluster DNS
+for the job's pods only. If the job previously failed, delete and re-run it after
+applying: `oc delete job job-patch-route-host -n openshift-ingress`.
+
 **TLS:** The Route uses **passthrough** termination. The hostname job sets both the Route host and `spec.listeners[].hostname` on the Gateway (required for `maas-api` URL discovery). The Gateway terminates TLS with the cluster ingress wildcard certificate (`cert-manager-ingress-cert` in `openshift-ingress`), so `curl` works without `-k` on OpenTLC clusters.
 
 **Prerequisite:** `cert-manager-ingress-cert` must exist in `openshift-ingress` (provisioned by the cluster cert-manager setup). Verify with:
