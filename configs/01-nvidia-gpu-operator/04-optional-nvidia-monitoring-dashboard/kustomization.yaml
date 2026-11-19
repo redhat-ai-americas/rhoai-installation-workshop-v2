@@ -12,4 +12,11 @@ configMapGenerator:
   - name: nvidia-dcgm-exporter-dashboard
     namespace: openshift-config-managed
     files:
-      - https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
+      # Vendored (rather than fetched from NVIDIA/dcgm-exporter main) because the
+      # deployed dcgm-exporter (4.6.1-4.8.4, run by the GPU operator in legacy
+      # metric-name mode) emits DCGM_FI_DEV_GPU_TEMP / _POWER_USAGE / _SM_CLOCK,
+      # while the main-branch dashboard expects the newer normalized names
+      # (_CELSIUS / _BOARD_POWER_WATTS / _SM_CLOCK_HERTZ) — a mismatch that made
+      # every panel render "No data". This copy is from tag 3.3.9-3.6.1, whose
+      # names match the exporter's output.
+      - dcgm-exporter-dashboard.json

@@ -114,6 +114,10 @@ Adds a DCGM exporter Grafana dashboard to the OpenShift console for viewing GPU 
 oc apply -k configs/01-nvidia-gpu-operator/04-optional-nvidia-monitoring-dashboard
 ```
 
+The dashboard JSON is vendored at tag `3.3.9-3.6.1` (see kustomization comment): the
+`main`-branch dashboard references newer normalized metric names than the exporter
+deployed by the GPU operator, which rendered every panel as "No data".
+
 **Validation:** In the OpenShift console, open **Observe** > **Dashboards** and locate the NVIDIA DCGM exporter dashboard (Administrator or Developer perspective).
 
 ### 05 - Optional NVIDIA Console Plugin
