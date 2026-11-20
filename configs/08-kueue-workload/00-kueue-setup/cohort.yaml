@@ -1,0 +1,12 @@
+# The team ClusterQueues reference this cohort by name (spec.cohortName:
+# gpu-cohort). A Cohort object groups ClusterQueues so their members can
+# borrow each other's UNUSED nominal quota, capped by each queue's
+# borrowingLimit — this is what makes the team-a/team-b GPU sharing story
+# in the README actually work. An empty spec is valid: no quota of its own
+# and no parent cohort, so it acts as a pure fair-share pool between the
+# member queues.
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: Cohort
+metadata:
+  name: gpu-cohort
+spec: {}
